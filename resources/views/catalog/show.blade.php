@@ -15,13 +15,18 @@
         <h3>Año: {{$singlePelicula['year']}}</h3>
         <h3>Director: {{$singlePelicula['director']}}</h3>
         <p><strong>Resumen: </strong>{{$singlePelicula['synopsis']}}</p>
-        <p>Estado:
+        <p><strong>Estado:</strong>
             @if ($singlePelicula['rented'] == false)
                 Película disponible para alquilar.</p>      
             @else
-                Película no disponible en este momento.
+                Película no disponible en este momento.</p>
             @endif
         <a href="{{ route( 'edit', ['id' => $singlePelicula->id] ) }}" class="btn btn-success">Modificar película</a>
+        @if ($singlePelicula['rented'])
+            <a href="" class="btn btn-secondary">Alquiler no disponible</a>
+        @else
+            <a href="{{ route( 'rent', ['id' => $singlePelicula->id] ) }}" class="btn btn-primary">Alquilar película</a>
+        @endif
 
     </div>
     

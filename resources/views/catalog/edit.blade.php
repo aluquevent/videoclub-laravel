@@ -34,7 +34,6 @@
             <label for="synopsis">Resumen</label>
             <textarea name="synopsis" id="" cols="30" class="form-control" rows="10">  {{ $singlePelicula->synopsis }} </textarea>
         </div>
-          
           <button type="submit" class="btn btn-primary">Modificar película</button>
         </form>
     </div>

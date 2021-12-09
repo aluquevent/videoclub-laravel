@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/', [HomeController::class, 'getHome'] );
 
-
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function() { 
     Route::get('/catalog', [CatalogController::class, 'getIndex'] );
     Route::get('/catalog/show/{id}', [CatalogController::class, 'getShow'] );
     Route::get('/catalog/create', [CatalogController::class, 'getCreate']);
     Route::post('/catalog/create', [CatalogController::class, 'store'])->name('crear');
     Route::get('/catalog/edit/{id}', [CatalogController::class, 'getEdit']);
     Route::put('/catalog/edit/{id}', [CatalogController::class, 'update'])->name('edit');
+    Route::get('/catalog/rent/{id}', [CatalogController::class, 'rented'])->name('rent');
 });

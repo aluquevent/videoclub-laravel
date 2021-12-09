@@ -19,6 +19,7 @@ class CatalogController extends Controller
 
     public function getShow($id){
 		$pelicula = Movie::findOrFail($id);
+	
         return view('catalog.show', array('singlePelicula'=>$pelicula));
     }
 
@@ -46,6 +47,15 @@ class CatalogController extends Controller
 		$p->poster = $request->poster;
 		$p->synopsis = $request->synopsis;
 		$p->save();
-		return redirect('/catalog/show/'.$id);
+		return redirect('/catalog/show/'.$id)->with('status', 'Éxito. La película ha sido actualizada.');
+	}
+
+	public function rented($id){
+		$p = Movie::findOrFail($id);
+		if ($p->rented==0){
+			$p->rented=1;
+			$p->save();
+		}
+		return redirect('/catalog/show/'.$id)->with('status','Has alquilado correctamente la película.');
 	}
 }
