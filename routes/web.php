@@ -18,35 +18,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'home')->name('home');
+
+Route::redirect('/home', '/peliculas');
+Route::redirect('/', '/peliculas');
+
 Route::view('/contact', 'contact')->name('contact');
 Route::post('contact', MessageController::class);
 
-// Route::group(['middleware' => 'auth'], function() {
+//Desactivamos el registro de usuarios
+Auth::routes(['register' => false]);
 
+//Estas rutas toman como controlador MovieController y acceden a las rutas por defecto de un recurso.
 Route::resource('peliculas', MovieController::class)
     ->parameters(['peliculas' => 'movie'])
     ->names('movies');
 
-Auth::routes(['register' => false]);
-    // Route::get('/catalog', [CatalogController::class, 'getIndex'] );
-    // Route::get('/catalog/show/{id}', [CatalogController::class, 'getShow'] );
-    // Route::get('/catalog/create', [CatalogController::class, 'getCreate']);
-    // Route::post('/catalog/create', [CatalogController::class, 'store'])->name('crear');
-    // Route::get('/catalog/edit/{id}', [CatalogController::class, 'getEdit']);
-    // Route::put('/catalog/edit/{id}', [CatalogController::class, 'update'])->name('edit');
-    // Route::get('/catalog/rent/{id}', [CatalogController::class, 'rented'])->name('rent');
-// });
 
-
-//Aprendible
-// Route::view('/', 'home')->name('home');
-// Route::view('/quienes-somos', 'about')->name('about');
-
-// Route::resource('portafolio', 'ProjectController')
-//     ->parameters(['portafolio' => 'project'])
-//     ->names('projects');
-
-
-
-// Auth::routes(['register' => false]);

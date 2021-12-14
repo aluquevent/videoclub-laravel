@@ -9,10 +9,17 @@ use Illuminate\Http\Request;
 class MovieController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Display a listing of the movies.
      */
+
+    //Aquí se encuentra el middleware con el que se protegen las rutas excepto index y show
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index','show');
+    }
+
+    //Al tratarse de un controlador tipo Resource, estas funciones son necesarias y permitirán
+    //a las rutas de tipo Resource encontrar su función.
     public function index()
     {
         return view('movies.index', [
@@ -21,9 +28,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Show the form for creating a new movie.
      */
     public function create()
     {
@@ -33,10 +38,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Store a newly created movie in storage.
      */
     public function store(SaveMovieRequest $request)
     {
@@ -46,10 +48,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * Display the specified movie.
      */
     public function show($id)
     {
@@ -59,10 +58,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * Show the form for editing the specified movie.
      */
     public function edit($id)
     {
@@ -72,13 +68,9 @@ class MovieController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * Update the specified movie in storage.
      */
-    public function update(Request $request, $id)
+    public function update(SaveMovieRequest $request, $id)
     {
         Movie::findOrFail($id)->update( $request->validated() );
 
@@ -86,95 +78,13 @@ class MovieController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
+     * Remove the specified movie from storage.
      */
-    public function destroy(Movie $movie)
+    public function destroy($id)
     {
-        $movie->delete();
+        Movie::findOrFail($id)->delete();
 
         return redirect()->route('movies.index')->with('status', 'La película fue eliminada con éxito.');
     }
 }
 
-//     <?php
-
-// namespace App\Http\Controllers;
-
-
-// use App\Models\Movie;
-// use App\Http\Requests\SaveMovieRequest;
-
-// class MovieController extends Controller
-// {
-
-// 	public function __construct()
-//     {
-//         $this->middleware('auth')->except('index', 'show');
-// 	}
-	
-//     public function index(){
-		
-// 		return view('movies.index', [
-// 			'movies'=> Movie::latest()->paginate()
-// 		]);
-//     }
-
-//     public function show($id){
-		
-// 		return view('movies.show', [
-// 			'movie' => Movie::findOrFail($id)
-// 			]);
-// 	}
-	
-// 	public function create(){
-
-// 		return view('movies.create', [
-// 			'movie' => new Movie
-// 		]);
-// 	}
-
-	
-	// public function store(SaveMovieRequest $request ){
-
-	// 	Movie::create( $request->validated() );
-		
-	// 	return redirect()->route('movies.index')->with('status', 'La película fue creada con éxito');
-	// }
-
-// 	public function edit($id){
-
-// 		return view('movies.edit',[
-// 			'movie' => Movie::findOrFail($id)
-// 		]);
-// 	}
-
-// 	public function update($id, SaveMovieRequest $request){
-
-// 		Movie::findOrFail($id)->update( $request->validated() );
-
-// 		return redirect()->route('movies.index')->with('status', 'La película fue actualizada con éxito');
-// 	}
-
-// 	public function destroy($id){
-
-// 		Movie::findOrFail($id)->delete();
-
-//         return redirect()->route('movies.index')->with('status', 'La película fue eliminada con éxito.');
-// 	}
-
-// 	public function rented($id){
-
-// 		$p = Movie::findOrFail($id);
-// 		if ($p->rented==0){
-// 			$p->rented=1;
-// 			$p->save();
-// 		}
-// 		return redirect('movies.show')
-// 				->with('status','Has alquilado correctamente la película.');
-// 	}
-// }
-
-// }
