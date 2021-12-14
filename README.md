@@ -48,7 +48,7 @@ views
 
 ```
 
-###Controladores y rutas
+<h3>Controladores y rutas</h3>
 
 Creamos un controlador de tipo recurso con el comando `php artisan make:controller MovieController --resource`.
 Este comando nos crea las funciones que necesitaremos para tratar el recurso a través de la base de datos y de las rutas, habiendo creado previamente el modelo de este recurso y la tabla en la base de datos.
