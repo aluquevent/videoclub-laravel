@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+---
+title="Documentación Proyecto Laravel"
+output="pdf"
+---
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#Proyecto IAW
+##Videoclub con Laravel
+___
+En esta aplicación se pone en práctica lo aprendido de Laravel. Creamos un CRUD básico donde el usuario puede ver, crear, editar y eliminar recursos y donde dependiendo de qué permisos de usuario tenga (si es administrador o si está registrado), podrá o no realizar todas las acciones.
 
-## About Laravel
+###Instalación
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Hay varias formas de llevar a cabo un proyecto. En mi caso he escogido **Valet**, para MacOs (Laragon para Windows), que incorpora un servidor Apache para las tareas de la base de datos y viene con un entorno de desarrollo muy cómodo de configurar.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Una vez hemos creado el proyecto con `composer create`, tenemos en nuestro directorio todo lo que laravel necesita para funcionar.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+###Vistas
 
-## Learning Laravel
+Laravel utiliza el gestor de plantillas ***blade*** que permite una integración con PHP.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+La estructura de las vistas es:
+```
+views
+│   
+└───auth //Aquí tenemos las vistas de autentificación
+│   │
+│   │
+│   └───passwords 
+│   
+└───erros //Podemos modificar las vistas de los errores del servidor. Blade las detecta automáticamente
+│
+└───layouts 
+│   │
+│   │   master.blade.php //Esta es la estructura base del proyecto. Lo que hace blade es insertar el resto vistas en las secciones que le indiquemos.
+│ 
+└───partials //Partes de la maquetación que nos interesa tener diferenciadas.
+│   │
+│   │   navbar.blade.php
+│   │   session-status.blade.php
+│ 
+└───movies //Es el recurso que administramos en este proyecto, dentro están todas las vistas necesarias para que el controlador y las rutas de recurso funcionen.
+│   │
+│   │   index.blade.php
+│   │   create.blade.php
+│   │   show.blade.php
+│   │   edit.blade.php
+└──────────────────────
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
 
-## Laravel Sponsors
+###Controladores y rutas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Creamos un controlador de tipo recurso con el comando `php artisan make:controller MovieController --resource`.
+Este comando nos crea las funciones que necesitaremos para tratar el recurso a través de la base de datos y de las rutas, habiendo creado previamente el modelo de este recurso y la tabla en la base de datos.
 
-### Premium Partners
+En las rutas lo indicaremos así:
+`
+Route::resource('peliculas', MovieController::class)
+    ->parameters(['peliculas' => 'movie'])
+    ->names('movies');
+`
+Con esta línea de código estamos creando rutas en nuestra aplicación para todas las funciones del controlador (index, show, create, edit y delete). Además le damos el nombre __movies__ para poder llamarlas desde las vistas sin tener que usar la ruta en sí. 
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+P.e: `route('movies.index')`
 
-## Contributing
+###Usuarios y permisos
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ya tenemos las rutas creadas pero son accesibles por cualquier usuario. Para restringir el acceso, tenemos que crear un usuario que Laravel. A su vez tenemos acceso a las rutas auth, que tenemos que ingresar en __`web.php`__ con la línea `Auth::routes()`.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Con un campo en la tabla users, podemos decir si el usuario es administrador con un booleano y luego comprobarlo en la aplicación con la función:
+`
+    public function isAdmin()
+    {
+        if ($this->is_admin == 1) {
+            return true;
+        }
+        return false;
+    }
+`
