@@ -1,3 +1,19 @@
 main{
     height: 100vh;
 }
+
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height: 100px;
+    max-height: 110px;
+    background-color: rgba(36, 32, 33, 0.9);
+    color: white;
+    font-family: "Helvetica Neue", Helvetica;
+    padding: 10px 0px;
+    padding-top: 10px;
+    margin-top: 30px;
+    font-weight: 100;
+    clear: both;
+}

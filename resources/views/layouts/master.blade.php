@@ -17,6 +17,20 @@
         main{
           height: 100vh;
         }
+
+        footer{
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          min-height: 100px;
+          max-height: 110px;
+          background-color: rgba(36, 32, 33, 0.9);
+          color: white;
+          padding-top: 10px;
+          margin-top: 10px;
+          font-weight: 100;
+          clear: both;
+      }
     </style>
 
   </head>
