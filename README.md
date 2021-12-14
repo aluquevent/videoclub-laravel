@@ -1,20 +1,16 @@
----
-title="Documentación Proyecto Laravel"
-output="pdf"
----
 
-#Proyecto IAW
-##Videoclub con Laravel
+<h1>Proyecto IAW</h1>
+<h2>Videoclub con Laravel</h2>
 ___
 En esta aplicación se pone en práctica lo aprendido de Laravel. Creamos un CRUD básico donde el usuario puede ver, crear, editar y eliminar recursos y donde dependiendo de qué permisos de usuario tenga (si es administrador o si está registrado), podrá o no realizar todas las acciones.
 
-###Instalación
+<h3>Instalación</h3>
 
 Hay varias formas de llevar a cabo un proyecto. En mi caso he escogido **Valet**, para MacOs (Laragon para Windows), que incorpora un servidor Apache para las tareas de la base de datos y viene con un entorno de desarrollo muy cómodo de configurar.
 
 Una vez hemos creado el proyecto con `composer create`, tenemos en nuestro directorio todo lo que laravel necesita para funcionar.
 
-###Vistas
+<h3>Vistas</h3>
 
 Laravel utiliza el gestor de plantillas ***blade*** que permite una integración con PHP.
 
@@ -63,7 +59,7 @@ Con esta línea de código estamos creando rutas en nuestra aplicación para tod
 
 P.e: `route('movies.index')`
 
-###Usuarios y permisos
+<h3>Usuarios y permisos</h3>
 
 Ya tenemos las rutas creadas pero son accesibles por cualquier usuario. Para restringir el acceso, tenemos que crear un usuario que Laravel. A su vez tenemos acceso a las rutas auth, que tenemos que ingresar en __`web.php`__ con la línea `Auth::routes()`.
 
