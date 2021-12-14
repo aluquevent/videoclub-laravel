@@ -61,7 +61,7 @@ P.e: `route('movies.index')`
 
 <h3>Usuarios y permisos</h3>
 
-Ya tenemos las rutas creadas pero son accesibles por cualquier usuario. Para restringir el acceso, tenemos que crear un usuario que Laravel. A su vez tenemos acceso a las rutas auth, que tenemos que ingresar en __`web.php`__ con la línea `Auth::routes()`.
+Ya tenemos las rutas creadas pero son accesibles por cualquier usuario. Para restringir el acceso, tenemos que crear un usuario que Laravel. A su vez tenemos acceso a las rutas auth, que tenemos que ingresar en __`web.php`__ con la línea `Auth::routes()`. Podemos excluir algunas de las vistas, como index y show. De esta forma si el usuario intenta acceder a `movies.create`, se le dirige al a la vista del login. 
 
 Con un campo en la tabla users, podemos decir si el usuario es administrador con un booleano y luego comprobarlo en la aplicación con la función:
 `
@@ -73,3 +73,14 @@ Con un campo en la tabla users, podemos decir si el usuario es administrador con
         return false;
     }
 `
+<h3>Formularios y validación</h3>
+
+Un problema en cualquier aplicación web es la inyección de código en nuestra base de datos. Para ello Laravel cuenta con varias medidas de protección.
+
+En mi caso he creado un nuevo objeto de tipo _request_ para las peticiones de envío de formulario, el cual sólo deja añadir a la base de datos lo campos indicador y ninguno más. También está la opción de las variable $fillable (indica qué campos se pueden rellenar) o $guarded(hace lo contrario).
+
+<h3>Traducciones</h3>
+
+Para traducir nuestra aplicación, tenemos que ir al directorio `resources/lang`. En él podemos encontrar un directorio de traducción en inglés. El paso a seguir es replicar ese directorio y ponerle en nombre "es". La comunidad de GitHub ha traducido ya los archivos y no hay que hacerlo a mano. De forma paralela, si tenemos más cosas que traducir, se crea un *lang*.json con las traducciones necesarias. Luego en las vistas usamos la directiva blade @lang para que, según el valor de la variable de entorno `locale='es'` (es este caso español), recoja esa traducción.  
+
+
