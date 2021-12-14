@@ -1,9 +1,10 @@
 <?php
 use App\Http\Controllers;
-use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -17,15 +18,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
-Route::get('/', [HomeController::class, 'getHome'] );
+Route::view('/', 'home')->name('home');
+Route::view('/contact', 'contact')->name('contact');
+Route::post('contact', MessageController::class);
 
-Route::group(['middleware' => 'auth'], function() { 
-    Route::get('/catalog', [CatalogController::class, 'getIndex'] );
-    Route::get('/catalog/show/{id}', [CatalogController::class, 'getShow'] );
-    Route::get('/catalog/create', [CatalogController::class, 'getCreate']);
-    Route::post('/catalog/create', [CatalogController::class, 'store'])->name('crear');
-    Route::get('/catalog/edit/{id}', [CatalogController::class, 'getEdit']);
-    Route::put('/catalog/edit/{id}', [CatalogController::class, 'update'])->name('edit');
-    Route::get('/catalog/rent/{id}', [CatalogController::class, 'rented'])->name('rent');
-});
+// Route::group(['middleware' => 'auth'], function() {
+
+Route::resource('peliculas', MovieController::class)
+    ->parameters(['peliculas' => 'movie'])
+    ->names('movies');
+
+Auth::routes(['register' => false]);
+    // Route::get('/catalog', [CatalogController::class, 'getIndex'] );
+    // Route::get('/catalog/show/{id}', [CatalogController::class, 'getShow'] );
+    // Route::get('/catalog/create', [CatalogController::class, 'getCreate']);
+    // Route::post('/catalog/create', [CatalogController::class, 'store'])->name('crear');
+    // Route::get('/catalog/edit/{id}', [CatalogController::class, 'getEdit']);
+    // Route::put('/catalog/edit/{id}', [CatalogController::class, 'update'])->name('edit');
+    // Route::get('/catalog/rent/{id}', [CatalogController::class, 'rented'])->name('rent');
+// });
+
+
+//Aprendible
+// Route::view('/', 'home')->name('home');
+// Route::view('/quienes-somos', 'about')->name('about');
+
+// Route::resource('portafolio', 'ProjectController')
+//     ->parameters(['portafolio' => 'project'])
+//     ->names('projects');
+
+
+
+// Auth::routes(['register' => false]);

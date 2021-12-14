@@ -3,18 +3,26 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <title>{{ $title ?? ""}}</title>
+    <title>@yield('title', 'Aprendible')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+
+    <style>
+        .active{
+          color:red;
+        }
+    </style>
+    <script src="{{ mix('js/app.js') }}" defer></script>
   </head>
   <body>
 
     @include('partials.navbar')
-    
+    @include('partials.session-status')
     <div class="container">
-        @include('partials.session-status')
+        
         @yield('content')
         
     </div>
