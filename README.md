@@ -1,7 +1,7 @@
 
 <h1>Proyecto IAW - CFGS Administración de Sistemas Informárticos y Redes</h1>
 <h2>Videoclub con Laravel</h2>
-___
+
 En esta aplicación se pone en práctica lo aprendido de Laravel. Creamos un CRUD básico donde el usuario puede ver, crear, editar y eliminar recursos y donde dependiendo de qué permisos de usuario tenga (si es administrador o si está registrado), podrá o no realizar todas las acciones.
 
 <h3>Instalación</h3>
@@ -92,14 +92,32 @@ Un problema en cualquier aplicación web es la inyección de código en nuestra 
 
 La excepción `MassAssignmentException` es una forma en la que el ORM (*Object-Relational-Model*) nos protege. Una vulnerabilidad de asignación masiva ocurre cuando un usuario envía un parametro inesperado mediante una solicitud y dicho parametro realiza un cambio en la base de datos que no esperabas. Por ejemplo, un usuario podría, utilizando Chrome Developer Tools o herramientas similares, agregar un campo oculto llamado is_admin con el valor de 1 y enviar la solicitud de registro de esta manera. Si no tienes cuidado con esto entonces cualquier usuario podría convertirse en administrador de tu aplicación, con consecuencias nefastas para tu sistema.
 
-Para evitar esto, dentro del modelo agregamos la propiedad `$fillable` y asignamos como valor un array con las columnas que queremos permitir que puedan ser cargadas de forma masiva:
+Para evitar esto, dentro del modelo agregamos la propiedad `$fillable` y asignamos como valor un array con las columnas que queremos permitir que puedan ser cargadas de forma masiva.
 
-También tenemos disponible la propiedad `$guarded`. Al igual que `$fillable`, esta propiedad tendrá como valor un array, pero en este caso las columnas que indicamos son las que no queremos que puedan ser cargadas de forma masiva:
+También tenemos disponible la propiedad `$guarded`. Al igual que `$fillable`, esta propiedad tendrá como valor un array, pero en este caso las columnas que indicamos son las que no queremos que puedan ser cargadas de forma masiva.
+
+Una vez protegidos los campos, podemos validar los que sí se han enviado en el método `store`, `edit` o `update`.
+
+```
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'title' => 'required',
+        'year' => 'required',
+        'director' => 'required',
+        'synopsis' => 'required'
+    ]);
+
+        // La película es válida...
+}
+```
+
+Para escenarios más complejos se puede crear un "form request" que encapsula su propia validación y autorización. Para crearlo `php artisan make:request StoreMovieRequest`.
 
 <h3>Traducciones</h3>
 
 Para traducir nuestra aplicación, tenemos que ir al directorio `resources/lang`.Dentro un directorio de traducción en inglés.
 
-<br>El paso a seguir es replicar ese directorio y ponerle en nombre "es". La comunidad de GitHub ha traducido ya los archivos y no hay que hacerlo a mano. De forma paralela, si tenemos más cosas que traducir, se crea un *lang*.json con las traducciones necesarias. Luego en las vistas usamos la directiva blade `@lang('Traduccion')` para que, según el valor de la variable de entorno `locale='es'` (es este caso español), recoja esa traducción.  
+El paso a seguir es replicar ese directorio y ponerle en nombre "es". La comunidad de GitHub ha traducido ya los archivos y no hay que hacerlo a mano. De forma paralela, si tenemos más cosas que traducir, se crea un *lang*.json con las traducciones necesarias. Luego en las vistas usamos la directiva blade `@lang('Traduccion')` para que, según el valor de la variable de entorno `locale='es'` (es este caso español), recoja esa traducción.  
 
 
